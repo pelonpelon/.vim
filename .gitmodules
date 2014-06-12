@@ -1,0 +1,36 @@
+[submodule "bundle/dash.vim"]
+path = bundle/dash.vim
+url = https://github.com/rizzatti/dash.vim.git
+[submodule "bundle/delimitMate"]
+path = bundle/delimitMate
+url = https://github.com/Raimondi/delimitMate.git
+[submodule "bundle/nerdtree"]
+path = bundle/nerdtree
+url = https://github.com/scrooloose/nerdtree.git
+[submodule "bundle/syntastic"]
+path = bundle/syntastic
+url = https://github.com/scrooloose/syntastic.git
+[submodule "bundle/ultisnips"]
+path = bundle/ultisnips
+url = https://github.com/SirVer/ultisnips.git
+[submodule "bundle/vim-jsbeautify"]
+path = bundle/vim-jsbeautify
+url = https://github.com/maksimr/vim-jsbeautify.git
+[submodule "bundle/js-beautify"]
+path = bundle/js-beautify
+url = https://github.com/einars/js-beautify.git
+[submodule "bundle/vim-snippets"]
+path = bundle/vim-snippets
+url = https://github.com/honza/vim-snippets.git
+[submodule "bundle/vim-togglelist"]
+path = bundle/vim-togglelist
+url = https://github.com/milkypostman/vim-togglelist.git
+[submodule "bundle/vim-unimpaired"]
+path = bundle/vim-unimpaired
+url = https://github.com/tpope/vim-unimpaired.git
+[submodule "bundle/YouCompleteMe"]
+path = bundle/YouCompleteMe
+url = https://github.com/Valloric/YouCompleteMe.git
+[submodule "bundle/OmniSharpServer"]
+path = bundle/OmniSharpServer
+url = https://github.com/nosami/OmniSharpServer.git
