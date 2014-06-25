@@ -18,7 +18,6 @@ set backupdir=~/.vim-backups
 set directory=~/.vim-backups
 set undodir=~/.vim-backups
 
-
 " Set some junk
 set autoindent " Copy indent from last line when starting new line.
 set backspace=indent,eol,start
@@ -107,15 +106,15 @@ nnoremap <C-y> 3<C-y>
 
 " Faster split resizing (+,-)
 if bufwinnr(1)
-  map + <C-W>+
-  map - <C-W>-
+  map + <C-W>>
+  map - <C-W><
 endif
 
 " Better split switching (Ctrl-j, Ctrl-k, Ctrl-h, Ctrl-l)
-map <C-j> <C-W>j
-map <C-k> <C-W>k
-map <C-H> <C-W>h
-map <C-L> <C-W>l
+"map <C-j> <C-W>j
+"map <C-k> <C-W>k
+"map <C-H> <C-W>h
+"map <C-L> <C-W>l
 
 " Sudo write (,W)
 noremap <leader>W :w !sudo tee %<CR>
@@ -130,11 +129,11 @@ command! W w
 nnoremap ' `
 
 " Hard to type things
-imap >> →
-imap << ←
-imap ^^ ↑
-imap VV ↓
-imap aa λ
+"imap >> →
+"imap << ←
+"imap ^^ ↑
+"imap VV ↓
+"imap aa λ
 
 " Toggle show tabs and trailing spaces (,c)
 set lcs=tab:›\ ,trail:·,eol:¬,nbsp:_
@@ -160,8 +159,8 @@ inoremap <expr> <Down> pumvisible() ? "\<C-n>" : "\<Down>"
 inoremap <expr> <Up>   pumvisible() ? "\<C-p>" : "\<Up>"
 
 " Indent/unident block (,]) (,[)
-nnoremap <leader>] >i{<CR>
-nnoremap <leader>[ <i{<CR>
+"nnoremap <leader>] >i{<CR>
+"nnoremap <leader>[ <i{<CR>
 
 " Paste toggle (,p)
 set pastetoggle=<leader>p
@@ -173,13 +172,13 @@ let NERDCompactSexyComs=1
 let g:NERDCustomDelimiters = { 'racket': { 'left': ';', 'leftAlt': '#|', 'rightAlt': '|#' } }
 
 " Buffer navigation (,,) (,]) (,[) (,ls)
-map <Leader>, <C-^>
+"map <Leader>, <C-^>
 " :map <Leader>] :bnext<CR>
 " :map <Leader>[ :bprev<CR>
-map <Leader>ls :buffers<CR>
+"map <Leader>ls :buffers<CR>
 
 " Close Quickfix window (,qq)
-map <leader>qq :cclose<CR>
+nnoremap <leader>qq :cclose<CR>
 
 " Yank from cursor to end of line
 nnoremap Y y$
@@ -205,7 +204,7 @@ noremap <leader>ss :call StripWhitespace ()<CR>
 " :au BufWinEnter * silent loadview
 
 " Join lines and restore cursor location (J)
-nnoremap J mjJ`j
+"nnoremap J mjJ`j
 
 " Toggle folds (<Space>)
 nnoremap <silent> <space> :exe 'silent! normal! '.((foldclosed('.')>0)? 'zMzx' : 'zc')<CR>
@@ -227,17 +226,23 @@ imap <PageDown> <C-O><C-D>
 " screen.  Both will pulse the cursor line so you can see where the hell you
 " are.  <c-\> will also fold everything in the buffer and then unfold just
 " enough for you to see the destination line.
-nnoremap <c-]> <c-]>mzzvzz15<c-e>`z:Pulse<cr>
-nnoremap <c-\> <c-w>v<c-]>mzzMzvzz15<c-e>`z:Pulse<cr>
+"nnoremap <c-]> <c-]>mzzvzz15<c-e>`z:Pulse<cr>
+"nnoremap <c-\> <c-w>v<c-]>mzzMzvzz15<c-e>`z:Pulse<cr>
 
 " Word processor mode (:WP)
 func! WordProcessorMode()
+  "setlocal formatoptions=1
+  setlocal spell spelllang=en_us
+  set thesaurus+=/Users/pelon/.vim/thesaurus/mthesaur.txt
+  set complete+=s
+  set formatprg=par
+  setlocal wrap
+  setlocal linebreak
   setlocal formatoptions=t1
   setlocal textwidth=100
   map j gj
   map k gk
   setlocal smartindent
-  setlocal spell spelllang=en_ca
   setlocal noexpandtab
 endfu
 com! WP call WordProcessorMode()
@@ -283,9 +288,14 @@ autocmd BufRead,BufNewFile *.[ch]   exe 'so ' . fname
 autocmd BufRead,BufNewFile *.[ch] endif
 
 " Ack.vim
-let g:ackprg = 'ag --nogroup --nocolor --column'
+let g:ackprg = 'ack -H --nocolor --nogroup --column'
 
 " Airline.vim
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#fnamemod = ':t'
+let g:airline_enable_syntastic = 1
+let g:airline_enable_tagbar = 0
+
 "let g:airline_left_sep = '»'
 let g:airline_left_sep = '▶'
 let g:airline_left_alt_sep = '▶'
@@ -302,7 +312,6 @@ let g:airline_paste_symbol = 'ρ'
 let g:airline_whitespace_symbol = 'Ξ'
 
 let g:airline_powerline_fonts = 0
-let g:airline_enable_syntastic = 1
 
 " Clojure.vim
 let g:vimclojure#ParenRainbow = 1 " Enable rainbow parens
@@ -344,7 +353,7 @@ let ruby_fold = 1
 " Syntastic.vim
 let g:syntastic_error_symbol = '✗'
 let g:syntastic_warning_symbol = '⚠'
-let g:syntastic_coffee_coffeelint_args = '-f /Users/gianni/.coffeelint.json'
+let g:syntastic_coffee_coffeelint_args = '-f /Users/pelon/.coffeelint.json'
 
 " Emulate bundles, allow plugins to live independantly. Easier to manage.
 execute pathogen#infect()
@@ -352,27 +361,29 @@ filetype plugin indent on
 
 " My additions
 nmap qq :qall<CR>
+
 " { nl }
-inoremap {<CR> {<CR>}<C-o>O
-inoremap (<CR> (<CR>)<C-o>O
-inoremap [<CR> [<CR>)<C-o>O
+"inoremap {<enter> {<CR>}<C-o>O
+"inoremap (<enter> (<CR>)<C-o>O
+"inoremap [<enter> [<CR>)<C-o>O
 set runtimepath+=~/.vim/ultisnips_rep
 autocmd QuickFixCmdPre *grep* silent
 autocmd QuickFixCmdPost *grep* copen 10
 nnoremap <f3> :Gcommit -a<CR>
 nnoremap <f4> :silent Gstatus<CR>
-nnoremap < :bp<CR>
-nnoremap > :bn<CR>
+
 nnoremap <Leader>, :NERDTreeToggle<CR>
-nnoremap <tab><tab> <c-w><c-w>
-autocmd BufNewFile,BufRead *.jade.html set ft=jade 
+nnoremap <tab><tab> <c-w>p
+autocmd BufNewFile,BufRead *.jade.html set ft=jade
 autocmd BufNewFile,BufRead /**/meteor/**/* set ft+=.meteor
-let g:ackprg = 'ack -H --nocolor --nogroup --column'
 " Trigger configuration. Do not use <tab> if you use https://github.com/Valloric/YouCompleteMe.
-let g:UltiSnipsExpandTrigger="<c-j>"
-let g:UltiSnipsJumpForwardTrigger="<c-j>"
-let g:UltiSnipsJumpBackwardTrigger="<c-k>"
-noremap <f5> :UltiSnipsEdit<CR>
+let g:UltiSnipsExpandTrigger="<c-g>"
+let g:UltiSnipsJumpForwardTrigger="<c-g>"
+"let g:UltiSnipsJumpBackwardTrigger="<c-i>"
+"inoremap <c-u> <C-R>=UltiSnips#ExpandSnippet<CR>
+"inoremap <c-u> :UltiSnips#ExpandJumpForwards<CR>
+"inoremap <c-i> :UltiSnips#ExpandJumpBackwards<CR>
+nnoremap <f5> :UltiSnipsEdit<CR>
 " If you want :UltiSnipsEdit to split your window.
 let g:UltiSnipsEditSplit="vertical"
 
@@ -404,4 +415,37 @@ endfunction
 let g:syntastic_coffee_coffeelint_quiet_messages = { "type":  "Style", "regex": '\m.*8' }
 let g:syntastic_coffee_coffeelint_exec = '/usr/local/bin/coffeelint'
 nmap \\ <plug>NERDCommenterToggle
+
+nmap <F12> :TagbarToggle<CR>
+
+" CtrlP Buffers
+nnoremap \b :CtrlPBuffer<CR>
+" CtrlP Recent Files
+nnoremap \r :CtrlPMRU<CR>
+
+" My file types
+au BufRead */wiki/* set ft=wiki
+au Filetype wiki call WordProcessorMode()
+
+" git commands
+nnoremap <localleader>gpa :call system('git commit -am "small change"')
+nnoremap <localleader>gpt :call system('git commit -m "small change" expand('%')')
+
+" UP DOWN LEFT RIGHT in insert mode
+inoremap <C-h> <left>
+inoremap <C-l> <right>
+
+inoremap <C-j> <down>
+inoremap <C-k> <up>
+" move windows and tabs
+nnoremap <C-h> <C-w>h
+nnoremap <C-l> <C-w>l
+nnoremap <C-j> :tabprevious<CR>
+nnoremap <C-k> :tabnext<CR>
+
+
+" external vim files
+"
+source ~/.vim/vimrc-tagbar.vim
+source ~/.vim/MetafileManager.vim
 
