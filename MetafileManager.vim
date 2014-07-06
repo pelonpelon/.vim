@@ -134,8 +134,6 @@ function! MetafileManager(...)
   endif
 
 endfunction
-nnoremap \] :call MetafileClose()<CR>
-nnoremap \[ :call MetafileManager()<CR>
 
 au BufReadPost * call MetafileManager("open")
 "au BufEnter * call MetafileManager("open")

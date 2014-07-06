@@ -29,12 +29,12 @@ set esckeys " Allow cursor keys in insert mode.
 set expandtab " Expand tabs to spaces
 set foldcolumn=4 " Column to show folds
 set foldenable
-set foldlevel=0
+set foldlevel=9
 set foldmethod=syntax " Markers are used to specify folds.
 set foldminlines=0 " Allow folding single lines
 set foldnestmax=3 " Set max fold nesting level
-set formatoptions=
 set foldtext=v:folddashes.substitute(getline(v:foldstart),'/\\*\\\|\\*/\\\|{{{\\d\\=','','g')
+set formatoptions=
 set formatoptions+=c " Format comments
 set formatoptions+=r " Continue comments by default
 set formatoptions+=o " Make comment when using o or O from comment line
@@ -173,8 +173,8 @@ let g:NERDCustomDelimiters = { 'racket': { 'left': ';', 'leftAlt': '#|', 'rightA
 
 " Buffer navigation (,,) (,]) (,[) (,ls)
 "map <Leader>, <C-^>
-" :map <Leader>] :bnext<CR>
-" :map <Leader>[ :bprev<CR>
+nnoremap <LocalLeader>] :bnext<CR>
+nnoremap <LocalLeader>[ :bprev<CR>
 "map <Leader>ls :buffers<CR>
 
 " Close Quickfix window (,qq)
@@ -304,7 +304,7 @@ let g:airline_right_sep = '◀'
 let g:airline_right_alt_sep = '◀'
 "let g:airline_linecolumn_prefix = '␊ '
 "let g:airline_linecolumn_prefix = '␤ '
-let g:airline_linecolumn_prefix = '¶ '
+"let g:airline_linecolumn_prefix = '¶ '
 let g:airline_branch_prefix = '⎇ '
 let g:airline_paste_symbol = 'ρ'
 "let g:airline_paste_symbol = 'Þ'
@@ -318,13 +318,6 @@ let g:vimclojure#ParenRainbow = 1 " Enable rainbow parens
 let g:vimclojure#DynamicHighlighting = 1 " Dynamic highlighting
 let g:vimclojure#FuzzyIndent = 1 " Names beginning in 'def' or 'with' to be indented as if they were included in the 'lispwords' option
 
-" CtrlP.vim
-let g:ctrlp_match_window_bottom = 0 " Show at top of window
-let g:ctrlp_jump_to_buffer = 'Et' " Jump to tab AND buffer if already open
-let g:ctrlp_split_window = 1 " <CR> = New Tab
-let g:ctrlp_open_new_file = 't' " Open newly created files in a new tab
-let g:ctrlp_open_multiple_files = 't' " Open multiple files in new tabs
-let g:ctrlp_show_hidden = 1
 
 " Markdown.vim
 let g:markdown_fenced_languages = ['ruby', 'html', 'javascript', 'css', 'erb=eruby.html', 'bash=sh']
@@ -438,14 +431,45 @@ inoremap <C-l> <right>
 inoremap <C-j> <down>
 inoremap <C-k> <up>
 " move windows and tabs
-nnoremap <C-h> <C-w>h
-nnoremap <C-l> <C-w>l
+nnoremap <C-h> <C-w>w
+nnoremap <C-l> <C-W>W
 nnoremap <C-j> :tabprevious<CR>
 nnoremap <C-k> :tabnext<CR>
 
+" scroll other window
+nmap <c-down> <c-w>p<c-e><c-w>p
+nmap <c-up> <c-w>p<c-y><c-w>p
+nmap <c-right> <c-w>pzl<c-w>p
+nmap <c-left> <c-w>pzh<c-w>p
+
+" find word under cursor
+nnoremap gt yiw:Ack! <C-R>"<CR>
+ 
 
 " external vim files
 "
 source ~/.vim/vimrc-tagbar.vim
 source ~/.vim/MetafileManager.vim
+source ~/.vim/famous.vim
+source ~/.vim/ctrlp.vim
+
+" clean up js to look like coffeescript
+function! Js2cs()
+  %s/\t/\ \ /g
+  %s/\/\//#/g
+  %s/function/->/g
+  %s/,\n//g
+  %s/{//g
+  %s/}//g
+  %s/)/\ /g
+  %s/(/\ /g
+  %s/;\n//g
+  %s/var\ //g
+  %s/this\./@/g
+  %s/this/@/g
+  %s/\n\n\n//g
+  %s/\n\n\n//g
+  %s/\n\n\n//g
+endfunc
+
 
