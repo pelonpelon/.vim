@@ -370,8 +370,8 @@ nnoremap <tab><tab> <c-w>p
 autocmd BufNewFile,BufRead *.jade.html set ft=jade
 autocmd BufNewFile,BufRead /**/meteor/**/* set ft+=.meteor
 " Trigger configuration. Do not use <tab> if you use https://github.com/Valloric/YouCompleteMe.
-let g:UltiSnipsExpandTrigger="<c-g>"
-let g:UltiSnipsJumpForwardTrigger="<c-g>"
+let g:UltiSnipsExpandTrigger="<C-G>"
+let g:UltiSnipsJumpForwardTrigger="<C-G>"
 "let g:UltiSnipsJumpBackwardTrigger="<c-i>"
 "inoremap <c-u> <C-R>=UltiSnips#ExpandSnippet<CR>
 "inoremap <c-u> :UltiSnips#ExpandJumpForwards<CR>
@@ -444,7 +444,7 @@ nmap <c-left> <c-w>pzh<c-w>p
 
 " find word under cursor
 nnoremap gt yiw:Ack! <C-R>"<CR>
- 
+
 
 " external vim files
 "
@@ -472,4 +472,5 @@ function! Js2cs()
   %s/\n\n\n//g
 endfunc
 
-
+" Sessions
+nmap <F2> :wa<Bar>exe "mksession! " . v:this_session<CR>:so ~/sessions/
