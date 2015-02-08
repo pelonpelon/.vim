@@ -1,3 +1,4 @@
+execute pathogen#infect()
 " Make vim more useful
 set nocompatible
 
@@ -6,6 +7,16 @@ set t_Co=256
 set background=dark
 syntax on
 colorscheme molotov
+highlight Normal ctermfg=lightgray
+highlight markdownBold cterm=bold ctermfg=white
+highlight markdownItalic cterm=none ctermfg=darkgray
+hi markdownH1 cterm=bold ctermbg=39 ctermfg=0
+highlight markdownH2 cterm=underline ctermfg=lightgreen
+highlight markdownH3 cterm=bold ctermfg=lightblue
+highlight markdownH4 ctermfg=197
+hi SpellBad cterm=underline ctermfg=197 ctermbg=233
+
+hi snipLeadingSpaces ctermbg=black
 
 " Enabled later, after Pathogen
 filetype off
@@ -27,6 +38,7 @@ set diffopt+=iwhite " Ignore whitespace changes (focus on code changes)
 set encoding=utf-8 nobomb " BOM often causes trouble
 set esckeys " Allow cursor keys in insert mode.
 set expandtab " Expand tabs to spaces
+autocmd filetype make setlocal noexpandtab
 set foldcolumn=4 " Column to show folds
 set foldenable
 set foldlevel=9
@@ -90,6 +102,19 @@ set wildmode=list:longest " Complete only until point of ambiguity.
 set winminheight=0 "Allow splits to be reduced to a single line.
 set wrapscan " Searches wrap around end of file
 
+" javascript-libraries-syntax.vim 
+" let g:used_javascript_libs = 'jquery,underscore,backbone,prelude,angularjs,angularui,react,flux,requirejs,sugar,jasmine,chai'
+let g:used_javascript_libs = ''
+
+" jsfmt on save
+let g:js_fmt_autosave = 1
+
+" jsfmt disable show errors
+"let g:js_fmt_fail_silently = 1
+
+" Browse with 'gx'
+let g:netrw_browsex_viewer="open"
+
 " Speed up transition from modes
 if ! has('gui_running')
   set ttimeoutlen=10
@@ -107,7 +132,7 @@ nnoremap <C-y> 3<C-y>
 " Faster split resizing (+,-)
 if bufwinnr(1)
   map + <C-W>>
-  map - <C-W><
+  map _ <C-W><
 endif
 
 " Better split switching (Ctrl-j, Ctrl-k, Ctrl-h, Ctrl-l)
@@ -126,7 +151,7 @@ noremap <leader>W :w !sudo tee %<CR>
 command! W w
 
 " Better mark jumping (line + col)
-nnoremap ' `
+" nnoremap ' `
 
 " Hard to type things
 "imap >> →
@@ -136,9 +161,15 @@ nnoremap ' `
 "imap aa λ
 
 " Toggle show tabs and trailing spaces (,c)
-set lcs=tab:›\ ,trail:·,eol:¬,nbsp:_
+" set lcs=tab:›\ ,trail:•,eol:¬,nbsp:_
+set lcs=tab:›\ ,trail:•,nbsp:_
 set fcs=fold:-
 nnoremap <silent> <leader>c :set nolist!<CR>
+
+" Markdown: highlight 2 spaces at end of line for <br />
+highlight ExtraWhitespace ctermbg=darkgray guibg=darkgreen
+match ExtraWhitespace /\s\s\+$/
+
 
 " Clear last search (,qs)
 map <silent> <leader>qs <Esc>:noh<CR>
@@ -208,7 +239,7 @@ noremap <leader>ss :call StripWhitespace ()<CR>
 
 " Toggle folds (<Space>)
 nnoremap <silent> <space> :exe 'silent! normal! '.((foldclosed('.')>0)? 'zMzx' : 'zc')<CR>
-nnoremap <silent> <CR> :exe 'silent! normal! '.((foldclosed('.')>0)? 'zMzx' : 'zc')<CR>
+" nnoremap <silent> <CR> :exe 'silent! normal! '.((foldclosed('.')>0)? 'zMzx' : 'zc')<CR>
 noremap <silent> ;; :exe 'silent! normal! '.'za'<CR>
 
 " Fix page up and down
@@ -232,6 +263,7 @@ imap <PageDown> <C-O><C-D>
 " Word processor mode (:WP)
 func! WordProcessorMode()
   "setlocal formatoptions=1
+  setlocal ft=wiki.markdown
   setlocal spell spelllang=en_us
   set thesaurus+=/Users/pelon/.vim/thesaurus/mthesaur.txt
   set complete+=s
@@ -239,11 +271,19 @@ func! WordProcessorMode()
   setlocal wrap
   setlocal linebreak
   setlocal formatoptions=t1
-  setlocal textwidth=100
+  setlocal textwidth=76
+  setlocal tabstop=4
+  setlocal softtabstop=4
+  setlocal shiftwidth=4
   map j gj
   map k gk
   setlocal smartindent
-  setlocal noexpandtab
+  setlocal expandtab
+  call pencil#init()
+  call lexical#init()
+  call litecorrect#init()
+  let g:lexical#dictionary_key = '<localleader>k'
+  let g:lexical#thesaurus_key = '<localleader>t'
 endfu
 com! WP call WordProcessorMode()
 
@@ -256,6 +296,14 @@ autocmd BufReadPost *
 " Set relative line numbers
 set relativenumber " Use relative line numbers. Current line is still in status bar.
 au BufReadPost,BufNewFile * set relativenumber
+
+" Mithril
+au BufRead,BufNewFile */mithril/*.js UltiSnipsAddFiletypes mithril.javascript
+au BufRead,BufNewFile */mithril/*.{html,html} UltiSnipsAddFiletypes mithril.html
+au BufRead,BufNewFile */mithril/*.js set ft=mithril.javascript
+au BufRead,BufNewFile */mithril/*.{html,htm} set ft=mithril.html
+nmap gf :e <cfile><CR>
+
 
 " JSON
 au BufRead,BufNewFile *.json set ft=json syntax=javascript
@@ -270,7 +318,10 @@ au BufRead,BufNewFile Rakefile,Capfile,Gemfile,.autotest,.irbrc,*.treetop,*.tt s
 au BufNewFile,BufRead *.nu,*.nujson,Nukefile setf nu
 
 " Coffee
-au BufNewFile,BufReadPost *.coffee setl foldmethod=indent nofoldenable
+au BufNewFile,BufReadPost *.coffee setl foldmethod=indent nofoldenable shiftwidth=2 expandtab
+hi link coffeeSpaceError NONE
+let coffee_compile_vert=1
+let coffee_watch_vert=1
 
 " ZSH
 au BufRead,BufNewFile .zsh_rc,.functions,.commonrc set ft=zsh
@@ -287,6 +338,9 @@ autocmd BufRead,BufNewFile *.[ch] if filereadable(fname)
 autocmd BufRead,BufNewFile *.[ch]   exe 'so ' . fname
 autocmd BufRead,BufNewFile *.[ch] endif
 
+" GitGutterDisable
+let g:gitgutter_enabled = 0
+
 " Ack.vim
 let g:ackprg = 'ack -H --nocolor --nogroup --column'
 
@@ -295,6 +349,8 @@ let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#fnamemod = ':t'
 let g:airline_enable_syntastic = 1
 let g:airline_enable_tagbar = 0
+let g:airline_enable_branch = 1
+let g:airline_branch_empty_message = 'noBranch'
 
 "let g:airline_left_sep = '»'
 let g:airline_left_sep = '▶'
@@ -325,6 +381,11 @@ let g:markdown_fenced_languages = ['ruby', 'html', 'javascript', 'css', 'erb=eru
 " Notes.vim
 let g:notes_directories = ['~/Dropbox/Notes']
 
+"""" MY MAPS """"
+
+" ENTER = insert new line
+nmap <S-Enter> O<Esc>j
+
 " Tabular.vim
 nmap <Leader>a= :Tabularize /=<CR>
 vmap <Leader>a= :Tabularize /=<CR>
@@ -347,13 +408,22 @@ let ruby_fold = 1
 let g:syntastic_error_symbol = '✗'
 let g:syntastic_warning_symbol = '⚠'
 let g:syntastic_coffee_coffeelint_args = '-f /Users/pelon/.coffeelint.json'
+" syntastic: stop annoying coffeelint warnings
+let g:syntastic_coffee_coffeelint_quiet_messages = { "type":  "Style", "regex": '\m.*8' }
+let g:syntastic_coffee_coffeelint_exec = '/usr/local/bin/coffeelint'
 
 " Emulate bundles, allow plugins to live independantly. Easier to manage.
-execute pathogen#infect()
 filetype plugin indent on
 
 " My additions
-nmap qq :qall<CR>
+nnoremap qq :q!<CR>
+nnoremap QQ :qall!<CR>
+" repeated replace with the same text
+nnoremap yw yiw
+nnoremap vw viw
+nnoremap s viw"0P
+
+
 
 " { nl }
 "inoremap {<enter> {<CR>}<C-o>O
@@ -365,20 +435,54 @@ autocmd QuickFixCmdPost *grep* copen 10
 nnoremap <f3> :Gcommit -a<CR>
 nnoremap <f4> :silent Gstatus<CR>
 
+" Switch windows
+nnoremap <S-left> :wincmd h<CR>
+nnoremap <S-right> :wincmd l<CR>
+nnoremap <S-up> :wincmd k<CR>
+nnoremap <S-down> :wincmd j<CR>
+
 nnoremap <Leader>, :NERDTreeToggle<CR>
 nnoremap <tab><tab> <c-w>p
 autocmd BufNewFile,BufRead *.jade.html set ft=jade
 autocmd BufNewFile,BufRead /**/meteor/**/* set ft+=.meteor
+
+""" UltiSnips """
 " Trigger configuration. Do not use <tab> if you use https://github.com/Valloric/YouCompleteMe.
-let g:UltiSnipsExpandTrigger="<C-G>"
-let g:UltiSnipsJumpForwardTrigger="<C-G>"
-"let g:UltiSnipsJumpBackwardTrigger="<c-i>"
+function! g:UltiSnips_Complete()
+    call UltiSnips#ExpandSnippet()
+    if g:ulti_expand_res == 0
+        if pumvisible()
+            return "\<C-n>"
+        else
+            call UltiSnips#JumpForwards()
+            if g:ulti_jump_forwards_res == 0
+               return "\<TAB>"
+            endif
+        endif
+    endif
+    return ""
+endfunction
+
+au BufEnter * exec "inoremap <silent> " . g:UltiSnipsExpandTrigger . " <C-R>=g:UltiSnips_Complete()<cr>"
+let g:UltiSnipsExpandTrigger           = '<tab>'
+let g:UltiSnipsJumpForwardTrigger      = '<tab>'
+let g:UltiSnipsJumpBackwardTrigger     = '<s-tab>'
+let g:ycm_key_list_select_completion   = ['<C-j>', '<C-n>', '<Down>']
+let g:ycm_key_list_previous_completion = ['<C-k>', '<C-p>', '<Up>']
+let g:UltiSnipsListSnippets="<c-e>"
+let g:UltiSnipsEditSplit="vertical"
+nnoremap <f5> :UltiSnipsEdit<CR>
+
+" this mapping Enter key to <C-y> to chose the current highlight item 
+" and close the selection list, same as other IDEs.
+inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+
+" CONFLICT with some plugins like tpope/Endwise
 "inoremap <c-u> <C-R>=UltiSnips#ExpandSnippet<CR>
 "inoremap <c-u> :UltiSnips#ExpandJumpForwards<CR>
 "inoremap <c-i> :UltiSnips#ExpandJumpBackwards<CR>
-nnoremap <f5> :UltiSnipsEdit<CR>
-" If you want :UltiSnipsEdit to split your window.
-let g:UltiSnipsEditSplit="vertical"
+
+
 
 command! -complete=shellcmd -nargs=+ Shell call s:RunShellCommand(<q-args>)
 function! s:RunShellCommand(cmdline)
@@ -404,9 +508,6 @@ function! s:RunShellCommand(cmdline)
   silent execute '$read !'. expanded_cmdline
   1
 endfunction
-" syntastic: stop annoying coffeelint warnings
-let g:syntastic_coffee_coffeelint_quiet_messages = { "type":  "Style", "regex": '\m.*8' }
-let g:syntastic_coffee_coffeelint_exec = '/usr/local/bin/coffeelint'
 nmap \\ <plug>NERDCommenterToggle
 
 nmap <F12> :TagbarToggle<CR>
@@ -443,8 +544,23 @@ nmap <c-right> <c-w>pzl<c-w>p
 nmap <c-left> <c-w>pzh<c-w>p
 
 " find word under cursor
-nnoremap gt yiw:Ack! <C-R>"<CR>
+" nnoremap gt yiw:Ack! <C-R>"<CR>
 
+
+" CTRL-P: remove buffer from list
+let g:ctrlp_buffer_func = { 'enter': 'MyCtrlPMappings' }
+
+func! MyCtrlPMappings()
+    nnoremap <buffer> <silent> <c-@> :call <sid>DeleteBuffer()<cr>
+endfunc
+
+func! s:DeleteBuffer()
+    let line = getline('.')
+    let bufid = line =~ '\[\d\+\*No Name\]$' ? str2nr(matchstr(line, '\d\+'))
+        \ : fnamemodify(line[2:], ':p')
+    exec "bd" bufid
+    exec "norm \<F5>"
+endfunc
 
 " external vim files
 "
@@ -453,24 +569,59 @@ source ~/.vim/MetafileManager.vim
 source ~/.vim/famous.vim
 source ~/.vim/ctrlp.vim
 
-" clean up js to look like coffeescript
-function! Js2cs()
-  %s/\t/\ \ /g
-  %s/\/\//#/g
-  %s/function/->/g
-  %s/,\n//g
-  %s/{//g
-  %s/}//g
-  %s/)/\ /g
-  %s/(/\ /g
-  %s/;\n//g
-  %s/var\ //g
-  %s/this\./@/g
-  %s/this/@/g
-  %s/\n\n\n//g
-  %s/\n\n\n//g
-  %s/\n\n\n//g
-endfunc
-
 " Sessions
 nmap <F2> :wa<Bar>exe "mksession! " . v:this_session<CR>:so ~/sessions/
+
+" YouCompleteMe and UltiSnips compatibility, with the helper of supertab
+" (via http://stackoverflow.com/a/22253548/1626737)
+" let g:SuperTabDefaultCompletionType    = '<C-n>'
+" let g:SuperTabCrMapping                = 0
+
+" Show highlight group at cursor position
+map <F8> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'
+\ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
+\ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
+
+" Change cursor in Insert Mode
+if &term =~ '^xterm'
+  " solid underscore
+  let &t_SI .= "\<Esc>[4 q"
+  " solid block
+  let &t_EI .= "\<Esc>[2 q"
+  " 1 or 0 -> blinking block
+  " 3 -> blinking underscore
+  " Recent versions of xterm (282 or above) also support
+  " 5 -> blinking vertical bar
+  " 6 -> solid vertical bar
+endif
+
+" Correct recent mispelled word
+"
+noremap <leader>pp mp[s1z=`p
+
+" choose first match in popup if shortest 
+" function! ExpandPossibleShorterSnippet()
+  " if len(UltiSnips#SnippetsInCurrentScope()) == 1 "only one candidate...
+    " let curr_key = keys(UltiSnips#SnippetsInCurrentScope())[0]
+    " normal diw
+    " exe "normal a" . curr_key
+    " exe "normal a "
+    " return 1
+  " endif
+  " return 0
+" endfunction
+" inoremap <silent> <C-L> <C-R>=(ExpandPossibleShorterSnippet() == 0? '': UltiSnips#ExpandSnippet())<CR>
+
+" function! SetFiletype(f)
+  " exec 'set ft=' . a:f
+" endfunction
+
+function! UltisnipsStop()
+  if &ft=="mithril\.javascript"
+    exec "normal! \<ESC>"
+  endif
+endfunc
+
+" let g:ycm_add_preview_to_completeopt = 1
+" let g:ycm_autoclose_preview_window_after_insertion = 1
+

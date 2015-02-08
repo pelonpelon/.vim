@@ -2,16 +2,20 @@
 let g:ctrlp_match_window = 'top,order:btt,min:1,max:20,results:20'
 let g:ctrlp_match_window_bottom = 0 " Show at top of window
 let g:ctrlp_jump_to_buffer = 'Et' " Jump to tab AND buffer if already open
-let g:ctrlp_split_window = 1 " <CR> = New Tab
-let g:ctrlp_open_new_file = 't' " Open newly created files in a new tab
+let g:ctrlp_split_window = 0 " <CR> = New Tab
+let g:ctrlp_open_new_file = 'r' " Open newly created files in a new tab
 let g:ctrlp_open_multiple_files = '2vjr' " Open max 2 files in vsplit, rest in hidden buffers
 let g:ctrlp_default_input = 0 "input seeded with current file's directory
 let g:ctrlp_show_hidden = 1
 let g:ctrlp_mruf_relative = 1 " MRU includes current directory
 let g:ctrlp_mruf_default_order = 1 " MRU disable sorting
-let g:ctrlp_root_markers = ['Gruntfile.js']
+let g:ctrlp_root_markers = ['Gruntfile.js', 'gulpfile.js']
 set wildignore+=*/.git/*,*/.hg/*,*/.svn/*,*/tags/*,*/.DS_Store/*
-let g:ctrlp_custom_ignore = '*/tags/*'
+let g:ctrlp_custom_ignore = {
+    \ 'dir':  '\v[\/]\.?(git|hg|svn|node_modules|bower_components|lib)$',
+    \ 'file': '\v\.?(exe|so|dll|tags)$',
+    \ 'link': 'SOME_BAD_SYMBOLIC_LINKS',
+    \}
 let g:ctrlp_user_command = {
   \ 'types': {
     \ 1: ['.git', 'cd %s && git ls-files . -co --exclude-standard']
@@ -38,6 +42,11 @@ let g:ctrlp_abbrev = {
     \ 'pattern': '\\\@<!:.\+\zs\\\@<! ',
     \ 'expanded': '\ ',
     \ 'mode': 'pfz',
+  \ },
+  \ {
+    \ 'pattern': '^vim',
+    \ 'expanded': '@cd ~/.vim',
+    \ 'mode': 'pfrz',
   \ },
   \ {
     \ 'pattern': '^sb',

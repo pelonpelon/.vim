@@ -1,6 +1,7 @@
 " VARIABLES
 let g:metadir = "~/.metafiles/"
 
+" TODO: set ft=meta+md
 exe 'au BufRead ' . metadir . ' set ft=meta'
 au Filetype meta setlocal wrap linebreak
 

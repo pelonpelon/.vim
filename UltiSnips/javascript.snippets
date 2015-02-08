@@ -1,6 +1,115 @@
-snippet new "new Obj({})"
+snippet new "new Obj({})" 
 new ${1:OBJECT}({
   $0
 });
 endsnippet
+
+snippet cl "console.log(...)" b
+console.log($0);
+endsnippet
+
+snippet log "console.log(...)" b
+console.log($0);
+endsnippet
+
+snippet fun= "function (fun)"
+// ${1:function_name}: $2
+var $1 = function $1(${3:argument}) {
+	${VISUAL}$0
+}
+endsnippet
+
+snippet fun "function (fun)"
+// ${1:function_name}: $2
+function $1(${3:argument}) {
+	${VISUAL}$0
+}
+endsnippet
+
+snippet req "require" b
+var `!p
+def formatVariableName(path):
+  lastPart = path.split('/')[-1]
+  if lastPart == 'underscore':
+    return '_'
+  elif lastPart == 'jquery':
+    return '$'
+  else:
+    return re.sub(r'[_\-]', '', lastPart.title())
+snip.rv = formatVariableName(t[1])
+` = require('${1}');$0
+endsnippet
+
+snippet mod "module.exports" b
+module.exports = ${1:`!p snip.rv = ''.join(x.title() for x in re.sub('\.js$', '', snip.basename or 'ModuleName').split('_'))`};$0
+endsnippet
+
+global !p
+from snippet_helpers import *
+endglobal
+
+# Loops
+
+snippet for "for loop" !
+for (let ${1:i} = 0, len = ${2:array}.length; $1 < len; $1++) {
+  $0${2/([^.]+).*/$1/}[$1]
+}
+endsnippet
+
+snippet fori "for...in" b
+for (let ${1:prop} in ${2:Things}) {
+  if ($2.hasOwnProperty($1)) {
+    ${0:let ${3:value} = $2[$1];}
+  }
+}
+endsnippet
+
+snippet foro "for...of" b
+for (let ${1:value} of ${2:Things}) {
+  ${0:${VISUAL}}
+}
+endsnippet
+
+
+# Conditionals
+
+snippet if "if" b
+if (${1}) {
+  ${0:${VISUAL}}
+}
+endsnippet
+
+snippet el "else"
+else {
+  ${0:${VISUAL}}
+}
+endsnippet
+
+snippet elif "else if" !
+else if (${1}) {
+  ${0:${VISUAL}}
+}
+endsnippet
+
+
+# Switches
+
+snippet sw "switch" b
+switch (${1}) {
+  ${0:${VISUAL}}
+}
+endsnippet
+
+snippet case "case" b
+case ${1}:
+  ${0:${VISUAL}}
+  break;
+endsnippet
+
+# Misc
+
+snippet me "module.exports" b
+module.exports = ${1:`!p snip.rv = pascal_case_basename(snip.basename)`};$0
+endsnippet
+
 

@@ -1,0 +1,19 @@
+priority -50
+
+snippet strip "func to strip html from text" b
+function strip(html)
+{
+   var tmp = document.createElement("DIV");
+   tmp.innerHTML = html;
+   return tmp.textContent || tmp.innerText || "";
+}
+$0
+endsnippet
+
+snippet log "FP friendly console.log" b
+var log = function(value) {
+    console.log(value)
+    return value
+}
+$0
+endsnippet
