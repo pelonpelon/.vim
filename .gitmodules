@@ -169,9 +169,9 @@ url = https://github.com/lukaszkorecki/CoffeeTags.git
 [submodule "bundle/tlib_vim"]
 	path = bundle/tlib_vim
 	url = https://github.com/tomtom/tlib_vim.git
-[submodule "bundle/splitjoin"]
-	path = bundle/splitjoin
-	url = https://github.com/AndrewRadev/splitjoin.git
+[submodule "bundle/splitjoin.vim"]
+	path = bundle/splitjoin.vim
+	url = https://github.com/AndrewRadev/splitjoin.vim.git
 [submodule "bundle/jsx.vim"]
 	path = bundle/jsx.vim
 	url = https://github.com/jsx/jsx.vim.git
@@ -190,14 +190,14 @@ url = https://github.com/lukaszkorecki/CoffeeTags.git
 [submodule "bundle/VOoM"]
 	path = bundle/VOoM
 	url = https://github.com/vim-scripts/VOoM.git
-[submodule "bundle/Javascript-Indent"]
-	path = bundle/Javascript-Indent
-	url = https://github.com/vim-scripts/Javascript-Indent.git
+[submodule "bundle/JavaScript-Indent"]
+	path = bundle/JavaScript-Indent
+	url = https://github.com/vim-scripts/JavaScript-Indent.git
 [submodule "bundle/Emmet.vim"]
 	path = bundle/Emmet.vim
 	url = https://github.com/vim-scripts/Emmet.vim.git
-[submodule "bundle/Damian-Conway-s-Vim-Setup"]
-	path = bundle/Damian-Conway-s-Vim-Setup
+[submodule "celebrity.vimrc/Damian-Conway-s-Vim-Setup"]
+	path = celebrity.vimrc/Damian-Conway-s-Vim-Setup
 	url = https://github.com/thoughtstream/Damian-Conway-s-Vim-Setup.git
 	
 
