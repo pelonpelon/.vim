@@ -1,0 +1,9 @@
+priority -50
+
+snippet sm "Create submodule" b
+[submodule "bundle/$1"]
+	path = bundle/$1
+	url = https://github.com/$2/$1.git
+$0
+
+endsnippet
