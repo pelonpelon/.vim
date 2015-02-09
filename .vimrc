@@ -376,7 +376,10 @@ let g:vimclojure#FuzzyIndent = 1 " Names beginning in 'def' or 'with' to be inde
 
 
 " Markdown.vim
-let g:markdown_fenced_languages = ['ruby', 'html', 'javascript', 'css', 'erb=eruby.html', 'bash=sh']
+let g:markdown_fenced_languages = ['python', 'ruby', 'html', 'javascript', 'css', 'erb=eruby.html', 'bash=sh']
+
+" force markdown on .md files (as opposed to Modula-2)
+autocmd BufNewFile,BufReadPost *.md set filetype=markdown
 
 " Notes.vim
 let g:notes_directories = ['~/Dropbox/Notes']

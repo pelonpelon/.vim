@@ -1,11 +1,2 @@
 let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =9
-let g:netrw_dirhist_1='/Users/pelon/Sites/repos/mithril/tags-mithril-starter-kit/src/components/experimental'
-let g:netrw_dirhist_2='/Users/pelon/Sites/repos/mithril/tags-mithril-starter-kit/src/components/experimental/todosX'
-let g:netrw_dirhist_3='/Users/pelon/Sites/repos/mithril/tags-mithril-starter-kit/src/components'
-let g:netrw_dirhist_4='/Users/pelon/Sites/repos/mithril/tags-mithril-starter-kit/src'
-let g:netrw_dirhist_5='/Users/pelon/Sites/repos/mithril/tags-mithril-starter-kit/src/components'
-let g:netrw_dirhist_6='/Users/pelon/Sites/repos/mithril/tags-mithril-starter-kit/src/components/mithril.bootstrap'
-let g:netrw_dirhist_7='/Users/pelon/Sites/repos/mithril/tags-mithril-starter-kit/src'
-let g:netrw_dirhist_8='/Users/pelon/Sites/repos/mithril/tags-mithril-starter-kit/src/components'
-let g:netrw_dirhist_9='/Users/pelon/Sites/repos/mithril/tags-mithril-starter-kit/src/components/todos'
+let g:netrw_dirhist_cnt =0
